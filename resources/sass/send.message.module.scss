@@ -1,0 +1,40 @@
+.sending-message-container{
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    form{
+        display: grid;
+        grid-template-columns: 1fr auto;
+        height: 100px;
+        width: 100%;
+        margin-top: 15px;
+
+        .sending-message-button{
+            width: 100px;
+            height: 30px;
+            margin: 0 40px 0 10px;
+            align-self: center;
+            background-color: #6cb2eb;
+        }
+
+        .sending-message-input{
+            width: 90%;
+            justify-self: center;
+        }
+
+        .error-container{
+            grid-column: span 2;
+            text-align: center;
+
+            .error{
+                color: red;
+            }
+        }
+    }
+}
+
+
+
+

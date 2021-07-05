@@ -1,0 +1,32 @@
+.main-component{
+    display: flex;
+    height: calc(100vh - 70px);
+    width: 100%;
+    margin: 0 auto 30px auto;
+    background-color: white;
+
+    .contacts-container{
+        flex: 30%;
+        overflow-y: auto;
+    }
+
+    .messages-container{
+        display: flex;
+        flex-direction: column;
+        flex: 70%;
+        border-left: 1px solid black;
+
+        .messages{
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .send-messages{
+            max-width: 100%;
+            flex-basis: 100px;
+            flex-shrink: 0;
+        }
+    }
+}
+
+

@@ -1,0 +1,14 @@
+.contact{
+    max-width: 100%;
+    margin: 0 0 10px 0;
+    padding: 20px;
+    overflow: hidden;
+    font-size: 20px;
+    text-overflow: ellipsis;
+    text-align: center;
+    cursor: context-menu;
+}
+
+.selected-contact{
+    background-color: #6cb2eb;
+}

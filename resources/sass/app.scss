@@ -1,0 +1,38 @@
+html{
+    background: rgb(231, 235, 240);
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+#react-container{
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.navbar{
+    height: 40px;
+    margin: auto;
+    background-color: #5682A3;
+}
+
+.sending-indicator-container{
+    width: 100%;
+    .sending-indicator{
+        display: block;
+        margin: auto;
+        width: 60px;
+        height: 60px;
+        border: 16px solid #f3f3f3;
+        border-top: 16px solid #3498db;
+        border-radius: 50%;
+        animation: spin 2s linear infinite;
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    }
+}
