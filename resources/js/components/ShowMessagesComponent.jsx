@@ -11,7 +11,7 @@ function ShowMessagesComponent({ container, connection }) {
     shallowEqual);
   const messages = useSelector((state) => state.messages.messages,
     shallowEqual);
-  const needsScroll = useSelector((state) => state.messages.needsScroll, shallowEqual);
+  const needsScroll = useSelector((state) => state.messages.needsScroll);
   const isSendingRequest = useSelector((state) => state.messages.fetchRequestSending,
     shallowEqual);
   const isFetchRequestFailed = useSelector((state) => state.messages.fetchRequestFailed,
