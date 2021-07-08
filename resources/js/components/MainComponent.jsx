@@ -6,7 +6,7 @@ import ContactsComponent from './ContactsComponent';
 import MessageComponent from './MessagesComponent';
 
 function MainComponent() {
-  const isLogedIn = useSelector((state) => state.user.isLogedIn, shallowEqual);
+  const isLogedIn = useSelector((state) => state.user.isLogedIn);
   const history = useHistory();
 
   useEffect(

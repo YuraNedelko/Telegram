@@ -66553,7 +66553,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _MainComponent__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./MainComponent */ "./resources/js/components/MainComponent.jsx");
 /* harmony import */ var _reducers_UserReducer__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../reducers/UserReducer */ "./resources/js/reducers/UserReducer.jsx");
 /* harmony import */ var _reducers_ContactsReducer__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../reducers/ContactsReducer */ "./resources/js/reducers/ContactsReducer.jsx");
-/* harmony import */ var _reducers_MessageReducer__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../reducers/MessageReducer */ "./resources/js/reducers/MessageReducer.jsx");
+/* harmony import */ var _reducers_MessagesReducer__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../reducers/MessagesReducer */ "./resources/js/reducers/MessagesReducer.jsx");
 
 
 
@@ -66572,7 +66572,7 @@ __webpack_require__.r(__webpack_exports__);
 var combinedReducer = Object(redux__WEBPACK_IMPORTED_MODULE_2__["combineReducers"])({
   user: _reducers_UserReducer__WEBPACK_IMPORTED_MODULE_12__["default"],
   contacts: _reducers_ContactsReducer__WEBPACK_IMPORTED_MODULE_13__["default"],
-  messages: _reducers_MessageReducer__WEBPACK_IMPORTED_MODULE_14__["default"]
+  messages: _reducers_MessagesReducer__WEBPACK_IMPORTED_MODULE_14__["default"]
 });
 var persistConfig = {
   key: 'frontend',
@@ -66822,19 +66822,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 function LoginComponent() {
   var isSending = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
     return state.user.sendingLoginRequest;
-  }, react_redux__WEBPACK_IMPORTED_MODULE_2__["shallowEqual"]);
+  });
   var errors = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
     return state.user.loginRequestErrors;
-  }, react_redux__WEBPACK_IMPORTED_MODULE_2__["shallowEqual"]);
+  });
   var requestFailed = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
     return state.user.loginRequestFailed;
-  }, react_redux__WEBPACK_IMPORTED_MODULE_2__["shallowEqual"]);
+  });
   var wrongCredentials = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
     return state.user.loginWrongCredentials;
-  }, react_redux__WEBPACK_IMPORTED_MODULE_2__["shallowEqual"]);
+  });
   var isLogedIn = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
     return state.user.isLogedIn;
-  }, react_redux__WEBPACK_IMPORTED_MODULE_2__["shallowEqual"]);
+  });
   var history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["useHistory"])();
   var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
@@ -66969,7 +66969,7 @@ __webpack_require__.r(__webpack_exports__);
 function MainComponent() {
   var isLogedIn = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])(function (state) {
     return state.user.isLogedIn;
-  }, react_redux__WEBPACK_IMPORTED_MODULE_1__["shallowEqual"]);
+  });
   var history = Object(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["useHistory"])();
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
     if (!isLogedIn) history.push('/');
@@ -67058,10 +67058,10 @@ function MessageComponent() {
   var messagesContainer = Object(react__WEBPACK_IMPORTED_MODULE_0__["useRef"])(null);
   var selectedContact = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])(function (state) {
     return state.contacts.selectedContact;
-  }, react_redux__WEBPACK_IMPORTED_MODULE_1__["shallowEqual"]);
+  });
   var selectedContactHash = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useSelector"])(function (state) {
     return state.contacts.selectedContactHash;
-  }, react_redux__WEBPACK_IMPORTED_MODULE_1__["shallowEqual"]);
+  });
   var connection = Object(_hooks_useWebSocket__WEBPACK_IMPORTED_MODULE_5__["default"])(selectedContactHash);
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
     ref: messagesContainer,
@@ -67141,7 +67141,7 @@ function SendMessageComponent(_ref) {
       selectedContact = _ref.selectedContact;
   var errorSending = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useSelector"])(function (state) {
     return state.messages.sendingMessageFailed;
-  }, react_redux__WEBPACK_IMPORTED_MODULE_3__["shallowEqual"]);
+  });
   var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useDispatch"])();
 
   function handleSubmit(_x) {
@@ -67243,19 +67243,19 @@ function ShowMessagesComponent(_ref) {
   var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["useDispatch"])();
   var selectedContact = Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["useSelector"])(function (state) {
     return state.contacts.selectedContact;
-  }, react_redux__WEBPACK_IMPORTED_MODULE_0__["shallowEqual"]);
+  });
   var messages = Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["useSelector"])(function (state) {
     return state.messages.messages;
-  }, react_redux__WEBPACK_IMPORTED_MODULE_0__["shallowEqual"]);
+  });
   var needsScroll = Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["useSelector"])(function (state) {
     return state.messages.needsScroll;
   });
   var isSendingRequest = Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["useSelector"])(function (state) {
     return state.messages.fetchRequestSending;
-  }, react_redux__WEBPACK_IMPORTED_MODULE_0__["shallowEqual"]);
+  });
   var isFetchRequestFailed = Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["useSelector"])(function (state) {
     return state.messages.fetchRequestFailed;
-  }, react_redux__WEBPACK_IMPORTED_MODULE_0__["shallowEqual"]);
+  });
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
     if (connection) {
       connection.on('message', function (data) {
@@ -67457,10 +67457,10 @@ var ContactsReducer = function ContactsReducer() {
 
 /***/ }),
 
-/***/ "./resources/js/reducers/MessageReducer.jsx":
-/*!**************************************************!*\
-  !*** ./resources/js/reducers/MessageReducer.jsx ***!
-  \**************************************************/
+/***/ "./resources/js/reducers/MessagesReducer.jsx":
+/*!***************************************************!*\
+  !*** ./resources/js/reducers/MessagesReducer.jsx ***!
+  \***************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 

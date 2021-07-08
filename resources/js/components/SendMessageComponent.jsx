@@ -5,8 +5,7 @@ import styles from '../../sass/send.message.module.scss';
 import { appendMessage, sendingMessageFailed, sendingMessage } from '../actions/MessageActions';
 
 function SendMessageComponent({ connection, selectedContact }) {
-  const errorSending = useSelector((state) => state.messages.sendingMessageFailed,
-    shallowEqual);
+  const errorSending = useSelector((state) => state.messages.sendingMessageFailed);
   const dispatch = useDispatch();
 
   async function handleSubmit(e) {

@@ -11,12 +11,11 @@ import {
 import styles from '../../sass/login.module.scss';
 
 function LoginComponent() {
-  const isSending = useSelector((state) => state.user.sendingLoginRequest, shallowEqual);
-  const errors = useSelector((state) => state.user.loginRequestErrors, shallowEqual);
-  const requestFailed = useSelector((state) => state.user.loginRequestFailed, shallowEqual);
-  const wrongCredentials = useSelector((state) => state.user.loginWrongCredentials,
-    shallowEqual);
-  const isLogedIn = useSelector((state) => state.user.isLogedIn, shallowEqual);
+  const isSending = useSelector((state) => state.user.sendingLoginRequest);
+  const errors = useSelector((state) => state.user.loginRequestErrors);
+  const requestFailed = useSelector((state) => state.user.loginRequestFailed);
+  const wrongCredentials = useSelector((state) => state.user.loginWrongCredentials);
+  const isLogedIn = useSelector((state) => state.user.isLogedIn);
   const history = useHistory();
   const dispatch = useDispatch();
 

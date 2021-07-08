@@ -7,10 +7,8 @@ import socketHook from '../hooks/useWebSocket';
 
 function MessageComponent() {
   const messagesContainer = useRef(null);
-  const selectedContact = useSelector((state) => state.contacts.selectedContact,
-    shallowEqual);
-  const selectedContactHash = useSelector((state) => state.contacts.selectedContactHash,
-    shallowEqual);
+  const selectedContact = useSelector((state) => state.contacts.selectedContact);
+  const selectedContactHash = useSelector((state) => state.contacts.selectedContactHash);
   const connection = socketHook(selectedContactHash);
 
   return (

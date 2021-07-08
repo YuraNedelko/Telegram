@@ -7,15 +7,11 @@ import MessageItem from './MessageItem';
 
 function ShowMessagesComponent({ container, connection }) {
   const dispatch = useDispatch();
-  const selectedContact = useSelector((state) => state.contacts.selectedContact,
-    shallowEqual);
-  const messages = useSelector((state) => state.messages.messages,
-    shallowEqual);
+  const selectedContact = useSelector((state) => state.contacts.selectedContact);
+  const messages = useSelector((state) => state.messages.messages);
   const needsScroll = useSelector((state) => state.messages.needsScroll);
-  const isSendingRequest = useSelector((state) => state.messages.fetchRequestSending,
-    shallowEqual);
-  const isFetchRequestFailed = useSelector((state) => state.messages.fetchRequestFailed,
-    shallowEqual);
+  const isSendingRequest = useSelector((state) => state.messages.fetchRequestSending);
+  const isFetchRequestFailed = useSelector((state) => state.messages.fetchRequestFailed);
 
   useEffect(() => {
     if (connection) {

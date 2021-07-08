@@ -14,9 +14,9 @@ import NavbarComponent from './NavbarComponent';
 import Main from './MainComponent';
 import UserReducer from '../reducers/UserReducer';
 import ContactsReducer from '../reducers/ContactsReducer';
-import MessageReducer from '../reducers/MessageReducer';
+import MessagesReducer from '../reducers/MessagesReducer';
 
-const combinedReducer = combineReducers({ user: UserReducer, contacts: ContactsReducer, messages: MessageReducer });
+const combinedReducer = combineReducers({ user: UserReducer, contacts: ContactsReducer, messages: MessagesReducer });
 const persistConfig = {
   key: 'frontend',
   storage,
