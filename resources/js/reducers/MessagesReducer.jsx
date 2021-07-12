@@ -5,6 +5,8 @@ const defaultState = {
   sendingMessage: false,
   sendingMessageFailed: false,
   needsScroll: {},
+  currentPage: 1,
+  lastPage: 1,
 };
 
 const MessagesReducer = (state = defaultState, action) => {
@@ -16,6 +18,19 @@ const MessagesReducer = (state = defaultState, action) => {
         fetchRequestFailed: false,
         fetchRequestSending: false,
         messages: action.payload.messages,
+        currentPage: action.payload.current,
+        lastPage: action.payload.last,
+      };
+    }
+
+    case 'FETCH-MORE-MESSAGES-REQUEST-SUCCESS': {
+      return {
+        ...state,
+        fetchRequestFailed: false,
+        fetchRequestSending: false,
+        messages: [...action.payload.messages, ...state.messages],
+        currentPage: action.payload.current,
+        lastPage: action.payload.last,
       };
     }
 

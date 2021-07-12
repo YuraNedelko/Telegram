@@ -1,17 +1,81 @@
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import React, { useEffect } from 'react';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { appendMessage, fetchMessagesSuccess, fetchRequestFailed } from '../actions/MessageActions';
+import axios from 'axios';
+import {
+  appendMessage, fetchMessagesSuccess, fetchMoreMessagesSuccess, fetchRequestFailed,
+} from '../actions/MessageActions';
 import MessageItem from './MessageItem';
 
 function ShowMessagesComponent({ container, connection }) {
   const dispatch = useDispatch();
-  const selectedContact = useSelector((state) => state.contacts.selectedContact);
   const messages = useSelector((state) => state.messages.messages);
-  const needsScroll = useSelector((state) => state.messages.needsScroll);
   const isSendingRequest = useSelector((state) => state.messages.fetchRequestSending);
   const isFetchRequestFailed = useSelector((state) => state.messages.fetchRequestFailed);
+  const needsScroll = useSelector((state) => state.messages.needsScroll);
+  const currentPage = useSelector((state) => state.messages.currentPage);
+  const lastPage = useSelector((state) => state.messages.lastPage);
+  const selectedContact = useSelector((state) => state.contacts.selectedContact);
+
+  function scrollBottom(newMessages = false, element = null) {
+    if (container) {
+      if (newMessages) {
+        element.scrollIntoView({ behavior: 'auto' });
+      } else {
+        container.current.scrollTop = container.current.scrollHeight;
+      }
+    }
+  }
+
+  function makeApiCall(address, isInitialFetch = true, el) {
+    axios.get(`${address}`)
+      .then((response) => {
+        if (response?.data?.messagesInfo?.messages) {
+          if (isInitialFetch) {
+            dispatch(fetchMessagesSuccess(response.data.messagesInfo.messages,
+              response.data.meta.current_page, response.data.meta.last_page));
+            scrollBottom();
+          } else {
+            dispatch(fetchMoreMessagesSuccess(response.data.messagesInfo.messages,
+              response.data.meta.current_page, response.data.meta.last_page));
+            scrollBottom(true, el);
+          }
+        }
+      })
+      .catch((error) => {
+        dispatch(fetchRequestFailed());
+      });
+  }
+
+  const observedElement = useRef(null);
+
+  const ref = useCallback((el) => {
+    const callback = () => {
+      if (selectedContact && !(currentPage + 1 > lastPage)) {
+        makeApiCall(`/api/messages/${selectedContact}?page=${currentPage + 1}`, false, el);
+      }
+    };
+
+    if (observedElement.current) {
+      observedElement.current.disconnect();
+    }
+
+    if (el) {
+      observedElement.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          console.log(entries[0]);
+          callback();
+        }
+      });
+      observedElement.current.observe(el);
+    }
+  }, [selectedContact, currentPage, lastPage]);
+
+  useEffect(() => {
+    if (selectedContact) {
+      makeApiCall(`/api/messages/${selectedContact}`, true);
+    }
+  }, [selectedContact]);
 
   useEffect(() => {
     if (connection) {
@@ -32,30 +96,31 @@ function ShowMessagesComponent({ container, connection }) {
     () => { scroll(); }, [needsScroll],
   );
 
-  useEffect(() => {
-    if (selectedContact) {
-      axios.get(`/api/messages/${selectedContact}`)
-        .then((response) => {
-          if (response.data?.messages) {
-            dispatch(fetchMessagesSuccess(response.data.messages));
-          }
-        })
-        .catch((error) => {
-          dispatch(fetchRequestFailed());
-        });
+  const messageItems = messages.map((message, i) => {
+    if (i === 0) {
+      return (
+        <MessageItem
+          reference={ref}
+          key={message.id}
+          message={message.text}
+          date={message.date}
+          id={message.id}
+          isMine={message.isMine}
+          from={message.from}
+        />
+      );
     }
-  }, [selectedContact]);
-
-  const messageItems = messages.map((message) => (
-    <MessageItem
-      key={message.id}
-      message={message.text}
-      date={message.date}
-      id={message.id}
-      isMine={message.isMine}
-      from={message.from}
-    />
-  ));
+    return (
+      <MessageItem
+        key={message.id}
+        message={message.text}
+        date={message.date}
+        id={message.id}
+        isMine={message.isMine}
+        from={message.from}
+      />
+    );
+  });
 
   return (
     <>

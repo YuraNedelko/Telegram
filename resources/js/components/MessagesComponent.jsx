@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styles from '../../sass/main.module.scss';
 import ShowMessagesComponent from './ShowMessagesComponent';
 import SendMessageComponent from './SendMessageComponent';

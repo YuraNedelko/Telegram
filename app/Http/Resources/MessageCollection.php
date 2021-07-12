@@ -2,11 +2,12 @@
 
 namespace App\Http\Resources;
 
-use App\User;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class Contacts extends JsonResource
+class MessageCollection extends ResourceCollection
 {
+    public static $wrap = 'messagesInfo';
+
     /**
      * Transform the resource collection into an array.
      *
@@ -16,9 +17,7 @@ class Contacts extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'contactHash' => $this->pivot->contact_hash
+            'messages' => $this->collection,
         ];
     }
 }

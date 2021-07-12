@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
-use App\Http\Resources\Messages;
+use App\Http\Resources\Message;
+use App\Http\Resources\MessageCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -24,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Messages::withoutWrapping();
+        //Message::withoutWrapping();
+        //JsonResource::withoutWrapping();
     }
 }

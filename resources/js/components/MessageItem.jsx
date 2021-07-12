@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../../sass/message.item.module.scss';
 
 function MessageItem({
-  message, from, isMine, date, id,
+  reference, message, from, isMine, date, id,
 }) {
   function formatDate(originalFormat) {
     const unformatedDate = new Date(originalFormat);
@@ -15,7 +15,7 @@ function MessageItem({
   }
 
   return (
-    <div className={isMine ? `${styles['message-container']} ${styles['my-message']}` : styles['message-container']}>
+    <div ref={reference}  className={isMine ? `${styles['message-container']} ${styles['my-message']}` : styles['message-container']}>
       <div className={styles.from}>{from}</div>
       <div className={styles.message}>{message}</div>
       <div className={styles.date}>{formatDate(date)}</div>

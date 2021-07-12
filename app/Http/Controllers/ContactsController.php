@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Contacts;
+use App\Http\Resources\Contact;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +14,6 @@ class ContactsController extends Controller
         $contactsOwner = $user->contactsOwned;
         $contacts = $user->contacts->merge($contactsOwner);
 
-        return response()->json(['contacts' => Contacts::collection($contacts)],200);
+        return response()->json(['contacts' => Contact::collection($contacts)],200);
     }
 }
