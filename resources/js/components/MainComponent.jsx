@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styles from '../../sass/main.module.scss';
 import ContactsComponent from './ContactsComponent';

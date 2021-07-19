@@ -1,0 +1,66 @@
+version: "3.6"
+services:
+  app:
+    build:
+      args:
+        user: user
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: telegram
+    container_name: telegram-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - telegram
+
+  db:
+    image: mysql:5.7
+    container_name: telegram-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql/
+    networks:
+      - telegram
+
+  nginx:
+    image: nginx:alpine
+    container_name: telegram-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+    networks:
+      - telegram
+
+  node:
+    build:
+      context: ./
+      dockerfile: DockerfileNode
+    image: telegram-node
+    container_name: telegram-node
+    ports:
+      - 2223:2223
+    volumes:
+      - ./:/var/www
+    networks:
+      - telegram
+
+networks:
+  telegram:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local

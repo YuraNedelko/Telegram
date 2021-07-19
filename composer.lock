@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "71bd6ef3ecb643508f2872ca873d12d2",
+    "content-hash": "9d2f8f2b2de4a78968c5bd261f24ea6d",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -859,16 +859,16 @@
         },
         {
             "name": "laravel/sanctum",
-            "version": "v2.6.0",
+            "version": "v2.11.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sanctum.git",
-                "reference": "a38ffd5f419dbaaefc4cb81c1bdde12a02c4854e"
+                "reference": "b21e65cbe13896946986cb0868180cd69e1bd5d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sanctum/zipball/a38ffd5f419dbaaefc4cb81c1bdde12a02c4854e",
-                "reference": "a38ffd5f419dbaaefc4cb81c1bdde12a02c4854e",
+                "url": "https://api.github.com/repos/laravel/sanctum/zipball/b21e65cbe13896946986cb0868180cd69e1bd5d3",
+                "reference": "b21e65cbe13896946986cb0868180cd69e1bd5d3",
                 "shasum": ""
             },
             "require": {
@@ -876,12 +876,12 @@
                 "illuminate/contracts": "^6.9|^7.0|^8.0",
                 "illuminate/database": "^6.9|^7.0|^8.0",
                 "illuminate/support": "^6.9|^7.0|^8.0",
-                "php": "^7.2"
+                "php": "^7.2|^8.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
                 "orchestra/testbench": "^4.0|^5.0|^6.0",
-                "phpunit/phpunit": "^8.0"
+                "phpunit/phpunit": "^8.0|^9.3"
             },
             "type": "library",
             "extra": {
@@ -915,7 +915,11 @@
                 "laravel",
                 "sanctum"
             ],
-            "time": "2020-09-01T13:48:09+00:00"
+            "support": {
+                "issues": "https://github.com/laravel/sanctum/issues",
+                "source": "https://github.com/laravel/sanctum"
+            },
+            "time": "2021-06-15T15:56:21+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -6093,5 +6097,6 @@
     "platform": {
         "php": "^7.2.5"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.1.0"
 }
