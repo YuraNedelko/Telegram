@@ -7,6 +7,7 @@ const defaultState = {
   needsScroll: {},
   currentPage: 1,
   lastPage: 1,
+  consistentPaginationLastId: null,
 };
 
 const MessagesReducer = (state = defaultState, action) => {
@@ -20,6 +21,7 @@ const MessagesReducer = (state = defaultState, action) => {
         messages: action.payload.messages,
         currentPage: action.payload.current,
         lastPage: action.payload.last,
+        consistentPaginationLastId: action.payload.consistentPaginationLastId,
       };
     }
 

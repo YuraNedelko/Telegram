@@ -1,6 +1,6 @@
 import React from 'react';
-import axios from 'axios';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from '../axios';
 import styles from '../../sass/send.message.module.scss';
 import { appendMessage, sendingMessageFailed, sendingMessage } from '../actions/MessageActions';
 

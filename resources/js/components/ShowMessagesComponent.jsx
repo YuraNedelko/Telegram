@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
+import axios from '../axios';
 import {
   appendMessage, fetchMessagesSuccess, fetchMoreMessagesSuccess, fetchRequestFailed,
 } from '../actions/MessageActions';
@@ -16,6 +16,7 @@ function ShowMessagesComponent({ container, connection }) {
   const currentPage = useSelector((state) => state.messages.currentPage);
   const lastPage = useSelector((state) => state.messages.lastPage);
   const selectedContact = useSelector((state) => state.contacts.selectedContact);
+  const consistentPaginationLastId = useSelector((state) => state.messages.consistentPaginationLastId);
 
   function scrollBottom(newMessages = false, element = null) {
     if (container) {
@@ -30,10 +31,11 @@ function ShowMessagesComponent({ container, connection }) {
   function makeApiCall(address, isInitialFetch = true, el) {
     axios.get(`${address}`)
       .then((response) => {
-        if (response?.data?.messagesInfo?.messages) {
+        if (response?.data?.messagesInfo?.messages && response?.data?.meta) {
           if (isInitialFetch) {
             dispatch(fetchMessagesSuccess(response.data.messagesInfo.messages,
-              response.data.meta.current_page, response.data.meta.last_page));
+              response.data.meta.current_page, response.data.meta.last_page,
+              response.data.messagesInfo.messages?.[0].id));
             scrollBottom();
           } else {
             dispatch(fetchMoreMessagesSuccess(response.data.messagesInfo.messages,
@@ -52,7 +54,7 @@ function ShowMessagesComponent({ container, connection }) {
   const ref = useCallback((el) => {
     const callback = () => {
       if (selectedContact && !(currentPage + 1 > lastPage)) {
-        makeApiCall(`/api/messages/${selectedContact}?page=${currentPage + 1}`, false, el);
+        makeApiCall(`/api/messages/${selectedContact}?page=${currentPage + 1}&consistentPaginationLastId=${consistentPaginationLastId}`, false, el);
       }
     };
 
@@ -63,7 +65,6 @@ function ShowMessagesComponent({ container, connection }) {
     if (el) {
       observedElement.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-          console.log(entries[0]);
           callback();
         }
       });

@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import {
   useDispatch, useSelector, shallowEqual,
 } from 'react-redux';
-import axios from 'axios';
+import axios from '../axios';
 import { fetchRequestSuccess } from '../actions/ContactActions';
 import ContactItem from './ContactItem';
 
-function ContactsComponent() {
+export default function ContactsComponent() {
   const dispatch = useDispatch();
   const contacts = useSelector((state) => state.contacts.contacts, shallowEqual);
   const isSendingRequest = useSelector((state) => state.contacts.fetchRequestSending,
@@ -28,8 +28,9 @@ function ContactsComponent() {
       });
   }, [dispatch]);
 
-  const contactItems = contacts.map((contact) => (
+  const contactItems = contacts.map((contact, i) => (
     <ContactItem
+      index={i}
       key={contact.id}
       contact={contact}
       selectedContact={contact.id === selectedContact}
@@ -44,5 +45,3 @@ function ContactsComponent() {
     </>
   );
 }
-
-export default ContactsComponent;

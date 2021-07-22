@@ -56998,7 +56998,7 @@ module.exports = function(module) {
 /*!**********************************************!*\
   !*** ./resources/js/actions/UserActions.jsx ***!
   \**********************************************/
-/*! exports provided: sendingLoginRequest, loginRequestSuccess, loginWrongCredentials, loginRequestFailed, loginRequestErrors, loginStateRefresh */
+/*! exports provided: sendingLoginRequest, loginRequestSuccess, loginWrongCredentials, loginRequestFailed, loginRequestErrors, cookiesExpired, loginStateRefresh */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -57008,6 +57008,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loginWrongCredentials", function() { return loginWrongCredentials; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loginRequestFailed", function() { return loginRequestFailed; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loginRequestErrors", function() { return loginRequestErrors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cookiesExpired", function() { return cookiesExpired; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loginStateRefresh", function() { return loginStateRefresh; });
 // Login actions
 function sendingLoginRequest() {
@@ -57039,6 +57040,11 @@ function loginRequestErrors(_ref) {
     }
   };
 }
+function cookiesExpired() {
+  return {
+    type: 'COOKIES-EXPIRED'
+  };
+}
 function loginStateRefresh() {
   return {
     type: 'LOGIN-STATE-REFRESH'
@@ -57068,6 +57074,37 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 __webpack_require__(/*! ./components/App */ "./resources/js/components/App.jsx");
+
+/***/ }),
+
+/***/ "./resources/js/axios.js":
+/*!*******************************!*\
+  !*** ./resources/js/axios.js ***!
+  \*******************************/
+/*! exports provided: init, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "init", function() { return init; });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _actions_UserActions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./actions/UserActions */ "./resources/js/actions/UserActions.jsx");
+
+
+function init(store) {
+  axios__WEBPACK_IMPORTED_MODULE_0___default.a.interceptors.response.use(function (response) {
+    return response;
+  }, function (error) {
+    if (error.response.status === 401) {
+      localStorage.removeItem('isLoggedIn');
+      store.dispatch(Object(_actions_UserActions__WEBPACK_IMPORTED_MODULE_1__["cookiesExpired"])());
+    }
+
+    return Promise.reject(error);
+  });
+}
+/* harmony default export */ __webpack_exports__["default"] = (axios__WEBPACK_IMPORTED_MODULE_0___default.a);
 
 /***/ }),
 
@@ -57142,6 +57179,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _reducers_UserReducer__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../reducers/UserReducer */ "./resources/js/reducers/UserReducer.jsx");
 /* harmony import */ var _reducers_ContactsReducer__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../reducers/ContactsReducer */ "./resources/js/reducers/ContactsReducer.jsx");
 /* harmony import */ var _reducers_MessagesReducer__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../reducers/MessagesReducer */ "./resources/js/reducers/MessagesReducer.jsx");
+/* harmony import */ var _axios__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../axios */ "./resources/js/axios.js");
 
 
 
@@ -57153,6 +57191,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
  // import Main from './MainComponent';
+
 
 
 
@@ -57172,6 +57211,7 @@ var Main = /*#__PURE__*/Object(react__WEBPACK_IMPORTED_MODULE_0__["lazy"])(funct
 var persistedReducer = Object(redux_persist__WEBPACK_IMPORTED_MODULE_5__["persistReducer"])(persistConfig, combinedReducer);
 var store = Object(redux__WEBPACK_IMPORTED_MODULE_2__["createStore"])(persistedReducer);
 var persistor = Object(redux_persist__WEBPACK_IMPORTED_MODULE_5__["persistStore"])(store);
+Object(_axios__WEBPACK_IMPORTED_MODULE_14__["init"])(store);
 document.addEventListener('DOMContentLoaded', function () {
   if (document.getElementById('react-container')) {
     react_dom__WEBPACK_IMPORTED_MODULE_1___default.a.render( /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ErrorBoundary__WEBPACK_IMPORTED_MODULE_8__["default"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_NavbarComponent__WEBPACK_IMPORTED_MODULE_10__["default"], null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_4__["HashRouter"], null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_redux__WEBPACK_IMPORTED_MODULE_3__["Provider"], {
@@ -57288,8 +57328,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../axios */ "./resources/js/axios.js");
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
 /* harmony import */ var _actions_UserActions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../actions/UserActions */ "./resources/js/actions/UserActions.jsx");
 /* harmony import */ var _sass_login_module_scss__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../sass/login.module.scss */ "./resources/sass/login.module.scss");
@@ -57345,7 +57384,7 @@ function LoginComponent() {
               dispatch(Object(_actions_UserActions__WEBPACK_IMPORTED_MODULE_5__["sendingLoginRequest"])());
               _context.prev = 3;
               _context.next = 6;
-              return axios__WEBPACK_IMPORTED_MODULE_3___default.a.get('/sanctum/csrf-cookie');
+              return _axios__WEBPACK_IMPORTED_MODULE_3__["default"].get('/sanctum/csrf-cookie');
 
             case 6:
               _context.next = 11;
@@ -57357,10 +57396,10 @@ function LoginComponent() {
               dispatch(Object(_actions_UserActions__WEBPACK_IMPORTED_MODULE_5__["loginRequestFailed"])());
 
             case 11:
-              axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/login', data).then(function (response) {
+              _axios__WEBPACK_IMPORTED_MODULE_3__["default"].post('/login', data).then(function (response) {
                 var _response$data;
 
-                if (((_response$data = response.data) === null || _response$data === void 0 ? void 0 : _response$data.success) === true) {
+                if ((response === null || response === void 0 ? void 0 : (_response$data = response.data) === null || _response$data === void 0 ? void 0 : _response$data.success) === true) {
                   dispatch(Object(_actions_UserActions__WEBPACK_IMPORTED_MODULE_5__["loginRequestSuccess"])());
                   history.push('/main');
                 }
@@ -57567,7 +57606,8 @@ var defaultState = {
   sendingMessageFailed: false,
   needsScroll: {},
   currentPage: 1,
-  lastPage: 1
+  lastPage: 1,
+  consistentPaginationLastId: null
 };
 
 var MessagesReducer = function MessagesReducer() {
@@ -57583,7 +57623,8 @@ var MessagesReducer = function MessagesReducer() {
           fetchRequestSending: false,
           messages: action.payload.messages,
           currentPage: action.payload.current,
-          lastPage: action.payload.last
+          lastPage: action.payload.last,
+          consistentPaginationLastId: action.payload.consistentPaginationLastId
         });
       }
 
@@ -57736,6 +57777,13 @@ var UserReducer = function UserReducer() {
           loginWrongCredentials: true
         });
       }
+
+    case 'COOKIES-EXPIRED':
+      {
+        return _objectSpread(_objectSpread({}, state), {}, {
+          isLogedIn: false
+        });
+      }
     // DEFAULT ACTION
 
     default:
@@ -57797,8 +57845,8 @@ if(false) {}
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/telegram/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/telegram/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/Telegram/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/Telegram/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

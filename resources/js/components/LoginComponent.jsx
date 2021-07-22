@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import {
-  useDispatch, useSelector, shallowEqual,
+  useDispatch, useSelector,
 } from 'react-redux';
-import axios from 'axios';
+import axios from '../axios';
 import { useHistory } from 'react-router-dom';
 import {
   loginRequestErrors, loginRequestFailed, loginRequestSuccess,
@@ -36,7 +36,7 @@ function LoginComponent() {
 
     axios.post('/login', data)
       .then((response) => {
-        if (response.data?.success === true) {
+        if (response?.data?.success === true) {
           dispatch(loginRequestSuccess());
           history.push('/main');
         }

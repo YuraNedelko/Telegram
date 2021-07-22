@@ -1,10 +1,9 @@
 import React from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { contactSelected } from '../actions/ContactActions';
 import styles from '../../sass/contact.item.module.scss';
 
-function ContactItem({ contact, selectedContact }) {
-
+function ContactItem({ contact, selectedContact, index }) {
   const dispatch = useDispatch();
 
   function setContact() {
@@ -12,7 +11,17 @@ function ContactItem({ contact, selectedContact }) {
   }
 
   return (
-    <div className={selectedContact ? `${styles.contact} ${styles['selected-contact']}` : styles.contact} role="link" onClick={setContact} key={contact.id}>{contact.name}</div>
+    <div
+      tabIndex={index}
+      className={selectedContact ? `${styles.contact} 
+    ${styles['selected-contact']}` : styles.contact}
+      role="link"
+      onClick={setContact}
+      onKeyDown={setContact}
+      key={contact.id}
+    >
+      {contact.name}
+    </div>
   );
 }
 

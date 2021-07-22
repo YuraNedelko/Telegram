@@ -6,13 +6,17 @@ services:
         user: user
         uid: 1000
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: docker-compose/php/Dockerfile
     image: telegram
     container_name: telegram-app
+    environment:
+      XDEBUG_CONFIG: "remote_host=localhost:9003 remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
       - ./:/var/www
+      - ./docker-compose/php/php.ini:/usr/local/etc/php/php.ini
     networks:
       - telegram
 
@@ -24,9 +28,11 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_USER: ${DB_USER}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
+    ports:
+      - 3306:3306
     volumes:
       - dbdata:/var/lib/mysql/
     networks:
@@ -39,7 +45,6 @@ services:
     ports:
       - 8000:80
     volumes:
-      - ./:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d/
     networks:
       - telegram
@@ -47,13 +52,15 @@ services:
   node:
     build:
       context: ./
-      dockerfile: DockerfileNode
+      dockerfile: docker-compose/node/Dockerfile
     image: telegram-node
     container_name: telegram-node
     ports:
       - 2223:2223
     volumes:
-      - ./:/var/www
+      - ./node:/var/www/node
+      - ./package.json:/var/www/package.json
+      - ./package-lock.json:/var/www/package-lock.json
     networks:
       - telegram
 

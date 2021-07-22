@@ -61,6 +61,13 @@ const UserReducer = (state = defaultState, action) => {
       };
     }
 
+    case 'COOKIES-EXPIRED': {
+      return {
+        ...state,
+        isLogedIn: false,
+      };
+    }
+
     // DEFAULT ACTION
     default: {
       return state;

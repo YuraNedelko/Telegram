@@ -32,6 +32,12 @@ export function loginRequestErrors({ errors }) {
   };
 }
 
+export function cookiesExpired() {
+  return {
+    type: 'COOKIES-EXPIRED',
+  };
+}
+
 export function loginStateRefresh() {
   return {
     type: 'LOGIN-STATE-REFRESH',

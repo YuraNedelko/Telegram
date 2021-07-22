@@ -6,21 +6,30 @@ use App\Http\Requests\MessageRequest;
 use App\Http\Resources\MessageCollection;
 use App\Message;
 use App\Http\Resources\Message as Mess;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class MessagesController extends Controller
 {
-    function index($id, $perPage = 10){
+    function index(Request $request,$id){
         $userId = Auth::user()->id;
+        $perPage = $request['perPage'] ? $request['perPage'] : 10;
+        $consistentPaginationLastId = $request['consistentPaginationLastId'] ? $request['consistentPaginationLastId'] : null;
 
         $messages = Message::where(function ($query) use($id,$userId){
-            $query->where('from',$id)
-                ->where('to', $userId);
+            $query->where(function($query)use($id,$userId){
+                $query->where('from',$id)
+                    ->where('to', $userId);
+            })->orWhere( function ($query) use($id,$userId){
+                $query->where('from',$userId)
+                    ->where('to', $id);
+            });
         })
-        ->orWhere( function ($query) use($id,$userId){
-            $query->where('from',$userId)
-                ->where('to', $id);
-        })->orderBy('id', 'desc')->paginate($perPage);
+        ->when($consistentPaginationLastId, function($query) use ($consistentPaginationLastId){
+            $query->where('id', '<=', $consistentPaginationLastId);
+        })
+        ->orderBy('id', 'desc')->paginate($perPage);
 
         return new MessageCollection($messages);
     }

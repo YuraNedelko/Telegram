@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::resource('/contacts', 'ContactsController')
     ->except('destroy', 'update', 'show', 'edit')->middleware('auth:sanctum');
 
-Route::get('/messages/{id}{currentPage?}{perPage?}','MessagesController@index')->middleware('auth:sanctum');
+Route::get('/messages/{id}','MessagesController@index')->middleware('auth:sanctum');
 
 Route::resource('/messages', 'MessagesController')
     ->except('index', 'destroy', 'update', 'show', 'edit', 'create')->middleware('auth:sanctum');

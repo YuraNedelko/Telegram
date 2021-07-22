@@ -160,13 +160,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "sendingMessageFailed", function() { return sendingMessageFailed; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "appendMessage", function() { return appendMessage; });
 // Fetch actions
-function fetchMessagesSuccess(messages, current, last) {
+function fetchMessagesSuccess(messages, current, last, consistentPaginationLastId) {
   return {
     type: 'FETCH-MESSAGES-REQUEST-SUCCESS',
     payload: {
       messages: messages.reverse(),
       current: current,
-      last: last
+      last: last,
+      consistentPaginationLastId: consistentPaginationLastId
     }
   };
 }
@@ -234,7 +235,8 @@ __webpack_require__.r(__webpack_exports__);
 
 function ContactItem(_ref) {
   var contact = _ref.contact,
-      selectedContact = _ref.selectedContact;
+      selectedContact = _ref.selectedContact,
+      index = _ref.index;
   var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_1__["useDispatch"])();
 
   function setContact() {
@@ -242,9 +244,11 @@ function ContactItem(_ref) {
   }
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
-    className: selectedContact ? "".concat(_sass_contact_item_module_scss__WEBPACK_IMPORTED_MODULE_3___default.a.contact, " ").concat(_sass_contact_item_module_scss__WEBPACK_IMPORTED_MODULE_3___default.a['selected-contact']) : _sass_contact_item_module_scss__WEBPACK_IMPORTED_MODULE_3___default.a.contact,
+    tabIndex: index,
+    className: selectedContact ? "".concat(_sass_contact_item_module_scss__WEBPACK_IMPORTED_MODULE_3___default.a.contact, " \n    ").concat(_sass_contact_item_module_scss__WEBPACK_IMPORTED_MODULE_3___default.a['selected-contact']) : _sass_contact_item_module_scss__WEBPACK_IMPORTED_MODULE_3___default.a.contact,
     role: "link",
     onClick: setContact,
+    onKeyDown: setContact,
     key: contact.id
   }, contact.name);
 }
@@ -262,14 +266,13 @@ function ContactItem(_ref) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ContactsComponent; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../axios */ "./resources/js/axios.js");
 /* harmony import */ var _actions_ContactActions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../actions/ContactActions */ "./resources/js/actions/ContactActions.jsx");
 /* harmony import */ var _ContactItem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ContactItem */ "./resources/js/components/ContactItem.jsx");
-
 
 
 
@@ -290,15 +293,16 @@ function ContactsComponent() {
     return state.contacts.selectedContact;
   }, react_redux__WEBPACK_IMPORTED_MODULE_1__["shallowEqual"]);
   Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
-    axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/contacts').then(function (response) {
+    _axios__WEBPACK_IMPORTED_MODULE_2__["default"].get('/api/contacts').then(function (response) {
       if (response.data) {
         dispatch(Object(_actions_ContactActions__WEBPACK_IMPORTED_MODULE_3__["fetchRequestSuccess"])(response.data));
       }
     })["catch"](function (error) {// dispatch(loginRequestFailed());
     });
   }, [dispatch]);
-  var contactItems = contacts.map(function (contact) {
+  var contactItems = contacts.map(function (contact, i) {
     return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ContactItem__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      index: i,
       key: contact.id,
       contact: contact,
       selectedContact: contact.id === selectedContact
@@ -312,8 +316,6 @@ function ContactsComponent() {
     className: "sending-indicator"
   })), contactItems);
 }
-
-/* harmony default export */ __webpack_exports__["default"] = (ContactsComponent);
 
 /***/ }),
 
@@ -472,9 +474,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../axios */ "./resources/js/axios.js");
 /* harmony import */ var _sass_send_message_module_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../sass/send.message.module.scss */ "./resources/sass/send.message.module.scss");
 /* harmony import */ var _sass_send_message_module_scss__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_sass_send_message_module_scss__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _actions_MessageActions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../actions/MessageActions */ "./resources/js/actions/MessageActions.jsx");
@@ -493,10 +494,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 function SendMessageComponent(_ref) {
   var connection = _ref.connection,
       selectedContact = _ref.selectedContact;
-  var errorSending = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useSelector"])(function (state) {
+  var errorSending = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useSelector"])(function (state) {
     return state.messages.sendingMessageFailed;
   });
-  var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_3__["useDispatch"])();
+  var dispatch = Object(react_redux__WEBPACK_IMPORTED_MODULE_2__["useDispatch"])();
 
   function handleSubmit(_x) {
     return _handleSubmit.apply(this, arguments);
@@ -515,7 +516,7 @@ function SendMessageComponent(_ref) {
               if (data.get('text') && data.get('text').length > 0) {
                 data.append('to', selectedContact);
                 dispatch(Object(_actions_MessageActions__WEBPACK_IMPORTED_MODULE_5__["sendingMessage"])());
-                axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/api/messages', data).then(function (response) {
+                _axios__WEBPACK_IMPORTED_MODULE_3__["default"].post('/api/messages', data).then(function (response) {
                   var _response$data;
 
                   if ((_response$data = response.data) !== null && _response$data !== void 0 && _response$data.message) {
@@ -580,8 +581,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
 /* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../axios */ "./resources/js/axios.js");
 /* harmony import */ var _actions_MessageActions__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../actions/MessageActions */ "./resources/js/actions/MessageActions.jsx");
 /* harmony import */ var _MessageItem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./MessageItem */ "./resources/js/components/MessageItem.jsx");
 
@@ -616,6 +616,9 @@ function ShowMessagesComponent(_ref) {
   var selectedContact = Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["useSelector"])(function (state) {
     return state.contacts.selectedContact;
   });
+  var consistentPaginationLastId = Object(react_redux__WEBPACK_IMPORTED_MODULE_0__["useSelector"])(function (state) {
+    return state.messages.consistentPaginationLastId;
+  });
 
   function scrollBottom() {
     var newMessages = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
@@ -635,12 +638,14 @@ function ShowMessagesComponent(_ref) {
   function makeApiCall(address) {
     var isInitialFetch = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
     var el = arguments.length > 2 ? arguments[2] : undefined;
-    axios__WEBPACK_IMPORTED_MODULE_3___default.a.get("".concat(address)).then(function (response) {
-      var _response$data, _response$data$messag;
+    _axios__WEBPACK_IMPORTED_MODULE_3__["default"].get("".concat(address)).then(function (response) {
+      var _response$data, _response$data$messag, _response$data2;
 
-      if (response !== null && response !== void 0 && (_response$data = response.data) !== null && _response$data !== void 0 && (_response$data$messag = _response$data.messagesInfo) !== null && _response$data$messag !== void 0 && _response$data$messag.messages) {
+      if (response !== null && response !== void 0 && (_response$data = response.data) !== null && _response$data !== void 0 && (_response$data$messag = _response$data.messagesInfo) !== null && _response$data$messag !== void 0 && _response$data$messag.messages && response !== null && response !== void 0 && (_response$data2 = response.data) !== null && _response$data2 !== void 0 && _response$data2.meta) {
         if (isInitialFetch) {
-          dispatch(Object(_actions_MessageActions__WEBPACK_IMPORTED_MODULE_4__["fetchMessagesSuccess"])(response.data.messagesInfo.messages, response.data.meta.current_page, response.data.meta.last_page));
+          var _response$data$messag2;
+
+          dispatch(Object(_actions_MessageActions__WEBPACK_IMPORTED_MODULE_4__["fetchMessagesSuccess"])(response.data.messagesInfo.messages, response.data.meta.current_page, response.data.meta.last_page, (_response$data$messag2 = response.data.messagesInfo.messages) === null || _response$data$messag2 === void 0 ? void 0 : _response$data$messag2[0].id));
           scrollBottom();
         } else {
           dispatch(Object(_actions_MessageActions__WEBPACK_IMPORTED_MODULE_4__["fetchMoreMessagesSuccess"])(response.data.messagesInfo.messages, response.data.meta.current_page, response.data.meta.last_page));
@@ -656,7 +661,7 @@ function ShowMessagesComponent(_ref) {
   var ref = Object(react__WEBPACK_IMPORTED_MODULE_1__["useCallback"])(function (el) {
     var callback = function callback() {
       if (selectedContact && !(currentPage + 1 > lastPage)) {
-        makeApiCall("/api/messages/".concat(selectedContact, "?page=").concat(currentPage + 1), false, el);
+        makeApiCall("/api/messages/".concat(selectedContact, "?page=").concat(currentPage + 1, "&consistentPaginationLastId=").concat(consistentPaginationLastId), false, el);
       }
     };
 
@@ -667,7 +672,6 @@ function ShowMessagesComponent(_ref) {
     if (el) {
       observedElement.current = new IntersectionObserver(function (entries) {
         if (entries[0].isIntersecting) {
-          console.log(entries[0]);
           callback();
         }
       });

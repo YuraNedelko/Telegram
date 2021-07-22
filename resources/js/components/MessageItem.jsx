@@ -15,7 +15,7 @@ function MessageItem({
   }
 
   return (
-    <div ref={reference}  className={isMine ? `${styles['message-container']} ${styles['my-message']}` : styles['message-container']}>
+    <div ref={reference} className={isMine ? `${styles['message-container']} ${styles['my-message']}` : styles['message-container']}>
       <div className={styles.from}>{from}</div>
       <div className={styles.message}>{message}</div>
       <div className={styles.date}>{formatDate(date)}</div>

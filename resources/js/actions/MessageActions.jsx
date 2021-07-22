@@ -1,9 +1,10 @@
 // Fetch actions
-export function fetchMessagesSuccess(messages, current, last) {
-
+export function fetchMessagesSuccess(messages, current, last, consistentPaginationLastId) {
   return {
     type: 'FETCH-MESSAGES-REQUEST-SUCCESS',
-    payload: { messages: messages.reverse(), current, last },
+    payload: {
+      messages: messages.reverse(), current, last, consistentPaginationLastId,
+    },
   };
 }
 
@@ -13,7 +14,6 @@ export function fetchMoreMessagesSuccess(messages, current, last) {
     payload: { messages: messages.reverse(), current, last },
   };
 }
-
 
 export function sendingFetchRequest() {
   return {

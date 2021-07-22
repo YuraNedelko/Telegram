@@ -15,8 +15,13 @@ import NavbarComponent from './NavbarComponent';
 import UserReducer from '../reducers/UserReducer';
 import ContactsReducer from '../reducers/ContactsReducer';
 import MessagesReducer from '../reducers/MessagesReducer';
+import { init } from '../axios';
 
-const combinedReducer = combineReducers({ user: UserReducer, contacts: ContactsReducer, messages: MessagesReducer });
+const combinedReducer = combineReducers({
+  user: UserReducer,
+  contacts: ContactsReducer,
+  messages: MessagesReducer,
+});
 const persistConfig = {
   key: 'frontend',
   storage,
@@ -27,6 +32,7 @@ const Main = lazy(() => import(/* webpackChunkName: "MainComponent" */ './MainCo
 const persistedReducer = persistReducer(persistConfig, combinedReducer);
 const store = createStore(persistedReducer);
 const persistor = persistStore(store);
+init(store);
 
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('react-container')) {
