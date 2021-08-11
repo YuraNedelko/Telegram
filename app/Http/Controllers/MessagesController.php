@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MessageRequest;
 use App\Http\Resources\MessageCollection;
+use App\Jobs\SendMessageEmailNotification;
 use App\Message;
-use App\Http\Resources\Message as Mess;
+use App\Http\Resources\Message as MessageResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -38,7 +39,8 @@ class MessagesController extends Controller
         $message = (new Message())->fill($request->all());
         $message->from = Auth::user()->id;
         if($message->save()){
-            return response()->json(['message' => new Mess($message)] ,200);
+            SendMessageEmailNotification::dispatch($message, Auth::user());
+            return response()->json(['message' => new MessageResource($message)] ,200);
         }else{
             return  response()->json(['error' => 'Error occurred'], 500);
         }

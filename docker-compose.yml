@@ -7,7 +7,6 @@ services:
         uid: 1000
       context: ./
       dockerfile: docker-compose/php/Dockerfile
-    image: telegram
     container_name: telegram-app
     environment:
       XDEBUG_CONFIG: "remote_host=localhost:9003 remote_enable=1"
@@ -20,6 +19,27 @@ services:
     networks:
       - telegram
 
+  worker:
+    build:
+      args:
+        user: user
+        uid: 1000
+      context: ./
+      dockerfile: docker-compose/queues/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+      - redis
+    working_dir: /var/www/
+    command: bash -c "php artisan rabbitmq:queue-declare telegram
+      && php artisan rabbitmq:exchange-declare telegram --type=fanout
+      && php artisan rabbitmq:queue-bind telegram telegram
+      && php artisan rabbitmq:consume --queue=telegram"
+    volumes:
+      - ./:/var/www
+    networks:
+      - telegram
+
   db:
     image: mysql:5.7
     container_name: telegram-db
@@ -28,7 +48,7 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USER}
+      MYSQL_USER: ${DB_USERNAME}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     ports:
@@ -45,6 +65,7 @@ services:
     ports:
       - 8000:80
     volumes:
+      - ./:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d/
     networks:
       - telegram
@@ -53,7 +74,7 @@ services:
     build:
       context: ./
       dockerfile: docker-compose/node/Dockerfile
-    image: telegram-node
+    restart: unless-stopped
     container_name: telegram-node
     ports:
       - 2223:2223
@@ -61,6 +82,33 @@ services:
       - ./node:/var/www/node
       - ./package.json:/var/www/package.json
       - ./package-lock.json:/var/www/package-lock.json
+    networks:
+      - telegram
+
+  rabbitmq:
+    image: rabbitmq:3.6-management-alpine
+    container_name: telegram-rabbit
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ./docker-compose/rabbitmq/data/:/var/lib/rabbitmq/mnesia
+      - ./docker-compose/rabbitmq/log/:/var/log/rabbitmq/
+      - ./docker-compose/rabbitmq/etc/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
+    networks:
+      - telegram
+
+  redis:
+    image: redis:alpine
+    container_name: telegram-redis
+    command: redis-server --requirepass root
+    ports:
+      - 6379:6379
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    volumes:
+      - ./docker-compose/redis/redis-data/:/var/lib/rabbitmq/
+      - ./docker-compose/redis/redis.conf:/var/log/rabbitmq/
     networks:
       - telegram
 
