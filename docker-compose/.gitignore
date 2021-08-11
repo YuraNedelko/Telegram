@@ -1,5 +1,0 @@
-/mysql/*.sql
-/rabbitmq/data/mnesia/*
-/rabbitmq/data/*.cookie
-/rabbitmq/log/*
-/redis/redis-data/*
